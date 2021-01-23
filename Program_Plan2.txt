@@ -1,0 +1,32 @@
+덱 셔플메소드만들기
+스트링 배열 [12][4] 총 48개의 인덱스를 셔플 하는 방법.
+스왑방식 사용.
+예 :
+for(int i = 0; i <100; i++)// 100회 셔플
+{
+int random1.1 = (int) ((Math.random() * 100) % 12);
+int random1.2 = (int) ((Math.random() * 100) % 12);
+int random2.1 = (int) ((Math.random() * 100) % 4);
+int random2.2 = (int) ((Math.random() * 100) % 4);
+//스왑시작
+String empty = card[random1.1][random2.1];
+card[random1.1][random2.1] = card[random1.2][random2.2]
+card[random1.2][random2.2] = empty
+
+*스왑방식 사용 불가
+이유 :card배열의 첫번째차원[12]이 같은 월을 의미하기때문에 스왑을 하면 짝 맞추기가 어려워진다.
+그러므로 player 클래스에서 카드 7장 * 3명의 플레이어 = 총 21장을 무작위로 배열에서 추출하고, 남은 27장중 6장을 무작위로 추출한뒤,
+남은 21장을 덱으로 사용하는 방식을 사용.
+
+3명의 플레이어에게 카드7장씩배분메소드만들기
+플레이어 클래스 생성(DeckMaking클래스 상속)(카드를 상속받아야 하기 때문에)
+플레이어1에 랜덤한 카드 7장 주기.
+String[] Player1 = new String[7]; // 플레이어 1의 카드개수를 설정
+for(int i = 0; i < Player1.length; i++) {
+Player1[i] = card[(int) ((Math.random() * 100) % 12)][(int) ((Math.random() * 100) % 4)]; //Player1[i]에 랜덤한 카드 입력
+for(int j = 0; j < i; j++) { //중복제거를 위해 j는 i-1번 만큼 반복
+if(Player[i] == Player[j]) { // 만약 x번째 카드와 y번째 카드가 같다면
+i--; // 이번 i회 반복을 취소하고 한번 더 반복시킴.(중복이 아닐 때까지)
+}
+}
+}
