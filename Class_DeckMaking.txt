@@ -2,7 +2,7 @@ package gostop;
 
 public class DeckMaking {
 	public String[][] card = new String[12][4];// 카드 48개 생성
-	public void Deck() {// 카드 초기화 메소드
+	public void DeckMake() { // 카드 초기화 메소드
 		//피
 		for(int i = 0; i < 11; i++) {
 			for(int j = 0; j < 2; j++) {
@@ -45,5 +45,105 @@ public class DeckMaking {
 		//예외
 		card[8][3] = "9월열끗(쌍피)";
 	}
-
+	
+	public void show() { //카드목록출력
+		for(int i = 0; i < 12; i++){
+			for(int j = 0; j < 4; j++){
+			System.out.print(card[i][j] + " ");
+			}
+			System.out.println();
+			}
+	}
+	
+	public String[] shuffledcard = new String[48]; // 플레이어 3명의 카드 총 21개 생성
+	public String[] Player1	= new String[7];
+	public String[] Player2	= new String[7];
+	public String[] Player3	= new String[7];
+	public String[] Openedcard = new String[12];
+	public String[] Deck = new String[21];
+	
+	public void shuffle1() { //덱 셔플 메소드
+		for(int i = 0; i < shuffledcard.length; i++) {
+			shuffledcard[i] = card[(int) ((Math.random() * 100) % 12)][(int) ((Math.random() * 100) % 4)]; //Player1[i]에 랜덤한 카드 입력
+				for(int j = 0; j < i; j++) { //중복제거를 위해 j는 i-1번 만큼 반복
+					if(shuffledcard[i] == shuffledcard[j]) { // 만약 x번째 카드와 y번째 카드가 같다면
+						i--; // 이번 i회 반복을 취소하고 한번 더 반복시킴.(중복이 아닐 때까지)
+					}
+				}
+		}
+	}
+	public void shuffle2() {
+		for(int i = 0; i <100; i++)// 100회 셔플
+		{
+		int random1_1 = (int) ((Math.random() * 100) % 12);
+		int random1_2 = (int) ((Math.random() * 100) % 12);
+		int random2_1 = (int) ((Math.random() * 100) % 4);
+		int random2_2 = (int) ((Math.random() * 100) % 4);
+		//스왑시작
+		String empty = card[random1_1][random2_1];
+		card[random1_1][random2_1] = card[random1_2][random2_2];
+		card[random1_2][random2_2] = empty;
+		}
+	}
+	public void cardDistribute() {
+		for(int i = 0; i < Player1.length; i++) {
+			Player1[i] = shuffledcard[i];
+		}
+		for(int i = 0; i < Player2.length; i++) {
+			Player2[i] = shuffledcard[i + 7];
+		}
+		for(int i = 0; i < Player3.length; i++) {
+			Player3[i] = shuffledcard[i + 14];
+		}
+		for(int i = 0; i < 6; i++) {
+			Openedcard[i] = shuffledcard[i + 21];
+		}
+		for(int i = 0; i < 21; i++) {
+			Deck[i] = shuffledcard[i + 27];
+		}
+	}
+	public void shuffledcardshow() { //카드목록출력
+		for(int i = 0; i < shuffledcard.length; i++){
+			System.out.print(shuffledcard[i] + " ");
+			if(i % 5 == 0) {
+				System.out.println();
+			}
+		}
+		System.out.println();
+	}
+	public void Player1show() {
+		System.out.print("플레이어1의 카드는 ");
+		for(int i = 0; i < Player1.length; i++) {
+			System.out.print(Player1[i] + ", ");
+		}
+		System.out.print("입니다.");
+		System.out.println();
+	}
+	public void Player2show() {
+		System.out.print("플레이어2의 카드는 ");
+		for(int i = 0; i < Player2.length; i++) {
+			System.out.print(Player2[i] + ", ");
+		}
+		System.out.print("입니다.");
+		System.out.println();
+	}
+	public void Player3show() {
+		System.out.print("플레이어3의 카드는 ");
+		for(int i = 0; i < Player3.length; i++) {
+			System.out.print(Player3[i] + ", ");
+		}
+		System.out.print("입니다.");
+		System.out.println();
+	}
+	public void Openedcardshow() {
+		System.out.print("현재바닥에 깔려있는 카드는 ");
+		for(int i = 0; i < Openedcard.length; i++) {
+			System.out.print(Openedcard[i] + ", ");
+		}
+		System.out.print("입니다.");
+		System.out.println();
+	}
+	public void DeckCount() {
+		System.out.print("현재 남아있는 덱의 숫자는 " + Deck.length + "개입니다.");
+		}
 }
