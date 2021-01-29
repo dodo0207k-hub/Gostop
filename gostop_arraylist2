@@ -1,0 +1,94 @@
+package gostop;
+
+import java.util.ArrayList;
+
+public class GostopCard {
+	ArrayList<String> Gostopcard = new ArrayList<>();
+	
+	// 카드 초기화 메소드
+	public void DeckMake() {
+		//피
+		for(int i = 0; i < 11; i++) {
+			for(int j = 0; j < 2; j++) {
+				Gostopcard.add((i + 1) + "월피" + (j + 1));
+			}
+		}
+		//홍단
+		for(int i = 0; i < 3; i++) {
+			Gostopcard.add((i + 1) + "월홍단");
+		}
+		//고도리
+		Gostopcard.add("2월고도리");
+		Gostopcard.add("4월고도리");
+		Gostopcard.add("8월고도리");
+		//초단
+		Gostopcard.add("4월초단");
+		Gostopcard.add("5월초단");
+		Gostopcard.add("7월초단");
+		//청단
+		Gostopcard.add("6월청단");
+		Gostopcard.add("9월청단");
+		Gostopcard.add("10월청단");
+		//열끗
+		Gostopcard.add("5월열끗");
+		Gostopcard.add("6월열끗");
+		Gostopcard.add("7월열끗");
+		Gostopcard.add("10월열끗");
+		Gostopcard.add("12월열끗");
+		//쌍피
+		Gostopcard.add("11월쌍피");
+		Gostopcard.add("12월쌍피");
+		//광
+		Gostopcard.add("1월광");
+		Gostopcard.add("3월광");
+		Gostopcard.add("8월광");
+		Gostopcard.add("11월광");
+		//비
+		Gostopcard.add("12월비광");
+		Gostopcard.add("12월비띠");
+		//예외
+		Gostopcard.add("9월열끗(쌍피)");
+	}
+	public void gcshow() {
+		System.out.println(Gostopcard);
+		System.out.println(Gostopcard.size());
+		System.out.println(Player1);
+		System.out.println(Player2);
+		System.out.println(Player3);
+		System.out.println(Openedcard);
+	}
+	//덱 셔플 메소드2
+	public void shuffle() {
+		for(int i = 0; i <100; i++)// 100회 셔플
+		{
+		int randomindex = (int) ((Math.random() * 100) % 48); //gostopcard의 0번째 인덱스부터 47번째 인덱스 중에 하나 선택
+		//스왑시작
+		String random3 = Gostopcard.get(randomindex); //gostopcard의 random번째 인덱스를 random3에 넣음
+		Gostopcard.remove(randomindex);//gostopcard의 random번째 인덱스를 삭제
+		Gostopcard.add(random3);//gostopcard의 마지막 인덱스에 random3값을 넣음
+		}
+	}
+	ArrayList<String> Player1 = new ArrayList<>();
+	ArrayList<String> Player2 = new ArrayList<>();
+	ArrayList<String> Player3 = new ArrayList<>();
+	ArrayList<String> Openedcard = new ArrayList<>();
+	//카드 분배 메소드
+	public void distribute() {
+		for(int i = 0; i < 7; i++) {
+			Player1.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 7; i++) {
+			Player2.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 7; i++) {
+			Player3.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 6; i++) {
+			Openedcard.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+	}
+	
