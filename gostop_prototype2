@@ -1,0 +1,369 @@
+package gostop;
+
+import java.util.ArrayList;
+
+public class GostopCard {
+	ArrayList<String> Gostopcard = new ArrayList<>(); //덱(카드)
+	ArrayList<String> Player1 = new ArrayList<>(); //플레이어1의 손패
+	ArrayList<String> Player2 = new ArrayList<>(); //플레이어2의 손패
+	ArrayList<String> Player3 = new ArrayList<>(); //플레이어3의 손패
+	ArrayList<String> Openedcard = new ArrayList<>(); //공유카드
+	ArrayList<String> P1table = new ArrayList<>(); //플레이어1의 보유카드
+	ArrayList<String> P2table = new ArrayList<>(); //플레이어2의 보유카드
+	ArrayList<String> P3table = new ArrayList<>(); //플레이어3의 보유카드
+	ArrayList<String> collectcard = new ArrayList<>();
+	ArrayList<String> tcollectcard = new ArrayList<>();//플레이어가 낸 카드와 일치하는 카드 보관장소
+	
+	// 카드 초기화 메소드
+	public void DeckMake() {
+		//피
+		for(int i = 0; i < 11; i++) {
+			for(int j = 0; j < 2; j++) {
+				Gostopcard.add((i + 1) + "월피" + (j + 1));
+			}
+		}
+		//홍단
+		for(int i = 0; i < 3; i++) {
+			Gostopcard.add((i + 1) + "월홍단");
+		}
+		//고도리
+		Gostopcard.add("2월고도리");
+		Gostopcard.add("4월고도리");
+		Gostopcard.add("8월고도리");
+		//초단
+		Gostopcard.add("4월초단");
+		Gostopcard.add("5월초단");
+		Gostopcard.add("7월초단");
+		//청단
+		Gostopcard.add("6월청단");
+		Gostopcard.add("9월청단");
+		Gostopcard.add("10월청단");
+		//열끗
+		Gostopcard.add("5월열끗");
+		Gostopcard.add("6월열끗");
+		Gostopcard.add("7월열끗");
+		Gostopcard.add("10월열끗");
+		Gostopcard.add("12월열끗");
+		//쌍피
+		Gostopcard.add("11월쌍피");
+		Gostopcard.add("12월쌍피");
+		//광
+		Gostopcard.add("1월광");
+		Gostopcard.add("3월광");
+		Gostopcard.add("8월광");
+		Gostopcard.add("11월광");
+		//비
+		Gostopcard.add("12월비광");
+		Gostopcard.add("12월비띠");
+		//예외
+		Gostopcard.add("9월열끗(쌍피)");
+	}
+	//카드 보여주기 메소드
+	public void gcshow() {
+		System.out.println(Gostopcard);
+		System.out.println(Gostopcard.size());
+		System.out.println(Player1);
+		System.out.println(Player2);
+		System.out.println(Player3);
+		System.out.print("공유카드 :");
+		System.out.println(Openedcard);
+	}
+	//덱 셔플 메소드2
+	public void shuffle() {
+		for(int i = 0; i <100; i++)// 100회 셔플
+		{
+		int randomindex = (int) ((Math.random() * 100) % 48); //gostopcard의 0번째 인덱스부터 47번째 인덱스 중에 하나 선택
+		//스왑시작
+		String random3 = Gostopcard.get(randomindex); //gostopcard의 random번째 인덱스를 random3에 넣음
+		Gostopcard.remove(randomindex);//gostopcard의 random번째 인덱스를 삭제
+		Gostopcard.add(random3);//gostopcard의 마지막 인덱스에 random3값을 넣음
+		}
+	}
+	//카드 분배 메소드
+	public void distribute() {
+		for(int i = 0; i < 7; i++) {
+			Player1.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 7; i++) {
+			Player2.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 7; i++) {
+			Player3.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+		for(int i = 0; i < 6; i++) {
+			Openedcard.add(Gostopcard.get(i));
+			Gostopcard.remove(i);
+		}
+	}
+	//플레이어테이블 보여주기 메소드
+	public void ptableshow() {
+		System.out.print("플레이어1의 테이블 :");
+		System.out.println(P1table);
+		System.out.print("플레이어2의 테이블 :");
+		System.out.println(P2table);
+		System.out.print("플레이어3의 테이블 :");
+		System.out.println(P3table);
+	}
+	//카드 내기 메소드
+	public void pay1() {
+		for(int i = 0; i < Openedcard.size(); i++) { //플레이어가 카드1장을 내고 그 카드와 일치하는 공유카드가 있는지 확인
+				if(Openedcard.get(i).charAt(0) == Player1.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Player1.get(0).charAt(1)) { //플레이어가 낸 카드와 세트인 카드가 공유카드에 있을 경우
+					collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+					Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+					i--;
+				}
+			}
+		if(collectcard.size() == 0) { //낸 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			Openedcard.add(Player1.get(0));
+			Player1.remove(0);
+		}
+		else if(collectcard.size() == 1) { //낸 카드와 일치하는 공유카드가 1장 있을 경우 tcollectcard.size() = 2
+			collectcard.add(Player1.get(0));
+			Player1.remove(0);
+		}
+		else if(collectcard.size() == 2) { //낸 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+				Openedcard.add(collectcard.get(1));
+				collectcard.remove(1);
+				collectcard.add(Player1.get(0));
+				Player1.remove(0);
+		}
+		else { //낸 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Player1.get(0));
+			Player1.remove(0);
+			P1table.addAll(collectcard);
+			collectcard.clear();
+		}
+		tcollectcard.addAll(collectcard);
+		collectcard.clear();
+	}
+	//카드 뒤집기 메소드
+	public void turn1() {
+		for(int i = 0; i < Openedcard.size(); i++) { //덱에서 카드를 뒤집고 그 카드와 일치하는 공유카드가 있는지 확인
+			if(Openedcard.get(i).charAt(0) == Gostopcard.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Gostopcard.get(0).charAt(1)) {
+				collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+				Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+				i--;
+			}
+		}
+		if(collectcard.size() == 0) { //뒤집은 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//쌌을 경우
+					System.out.println("쌌다!");
+					Openedcard.addAll(tcollectcard);
+					tcollectcard.clear();
+				}
+			}
+			Openedcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+		}
+		else if(collectcard.size() == 1) { //뒤집은 카드와 일치하는 공유카드가 1장 있을 경우
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//폭탄일 경우
+					System.out.println("폭탄!");
+					tcollectcard.add(Gostopcard.get(0));
+					Gostopcard.remove(0);
+					tcollectcard.add(collectcard.get(0));
+					collectcard.clear();
+				}
+			}
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else if(collectcard.size() == 2) { //뒤집은 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+			Openedcard.add(collectcard.get(1));
+			collectcard.remove(1);
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else { //뒤집은 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			P1table.addAll(collectcard);
+			collectcard.clear();
+		}
+		P1table.addAll(tcollectcard);
+		tcollectcard.clear();
+	}
+	//카드 내기 메소드
+	public void pay2() {
+		for(int i = 0; i < Openedcard.size(); i++) { //플레이어가 카드1장을 내고 그 카드와 일치하는 공유카드가 있는지 확인
+				if(Openedcard.get(i).charAt(0) == Player2.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Player2.get(0).charAt(1)) { //플레이어가 낸 카드와 세트인 카드가 공유카드에 있을 경우
+					collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+					Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+					i--;
+				}
+			}
+		if(collectcard.size() == 0) { //낸 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			Openedcard.add(Player2.get(0));
+			Player2.remove(0);
+		}
+		else if(collectcard.size() == 1) { //낸 카드와 일치하는 공유카드가 1장 있을 경우 tcollectcard.size() = 2
+			collectcard.add(Player2.get(0));
+			Player2.remove(0);
+		}
+		else if(collectcard.size() == 2) { //낸 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+				Openedcard.add(collectcard.get(1));
+				collectcard.remove(1);
+				collectcard.add(Player2.get(0));
+				Player2.remove(0);
+		}
+		else { //낸 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Player2.get(0));
+			Player2.remove(0);
+			P2table.addAll(collectcard);
+			collectcard.clear();
+		}
+		tcollectcard.addAll(collectcard);
+		collectcard.clear();
+	}
+	//카드 뒤집기 메소드
+	public void turn2() {
+		for(int i = 0; i < Openedcard.size(); i++) { //덱에서 카드를 뒤집고 그 카드와 일치하는 공유카드가 있는지 확인
+			if(Openedcard.get(i).charAt(0) == Gostopcard.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Gostopcard.get(0).charAt(1)) {
+				collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+				Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+				i--;
+			}
+		}
+		if(collectcard.size() == 0) { //뒤집은 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//쌌을 경우
+					System.out.println("쌌다!");
+					Openedcard.addAll(tcollectcard);
+					tcollectcard.clear();
+				}
+			}
+			Openedcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+		}
+		else if(collectcard.size() == 1) { //뒤집은 카드와 일치하는 공유카드가 1장 있을 경우
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//폭탄일 경우
+					System.out.println("폭탄!");
+					tcollectcard.add(Gostopcard.get(0));
+					Gostopcard.remove(0);
+					tcollectcard.add(collectcard.get(0));
+					collectcard.clear();
+				}
+			}
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else if(collectcard.size() == 2) { //뒤집은 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+			Openedcard.add(collectcard.get(1));
+			collectcard.remove(1);
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else { //뒤집은 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			P2table.addAll(collectcard);
+			collectcard.clear();
+		}
+		P2table.addAll(tcollectcard);
+		tcollectcard.clear();
+	}
+	//카드 내기 메소드
+	public void pay3() {
+		for(int i = 0; i < Openedcard.size(); i++) { //플레이어가 카드1장을 내고 그 카드와 일치하는 공유카드가 있는지 확인
+				if(Openedcard.get(i).charAt(0) == Player3.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Player3.get(0).charAt(1)) { //플레이어가 낸 카드와 세트인 카드가 공유카드에 있을 경우
+					collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+					Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+					i--;
+				}
+			}
+		if(collectcard.size() == 0) { //낸 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			Openedcard.add(Player3.get(0));
+			Player3.remove(0);
+		}
+		else if(collectcard.size() == 1) { //낸 카드와 일치하는 공유카드가 1장 있을 경우 tcollectcard.size() = 2
+			collectcard.add(Player3.get(0));
+			Player3.remove(0);
+		}
+		else if(collectcard.size() == 2) { //낸 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+				Openedcard.add(collectcard.get(1));
+				collectcard.remove(1);
+				collectcard.add(Player3.get(0));
+				Player3.remove(0);
+		}
+		else { //낸 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Player3.get(0));
+			Player3.remove(0);
+			P3table.addAll(collectcard);
+			collectcard.clear();
+		}
+		tcollectcard.addAll(collectcard);
+		collectcard.clear();
+	}
+	//카드 뒤집기 메소드
+	public void turn3() {
+		for(int i = 0; i < Openedcard.size(); i++) { //덱에서 카드를 뒤집고 그 카드와 일치하는 공유카드가 있는지 확인
+			if(Openedcard.get(i).charAt(0) == Gostopcard.get(0).charAt(0) && Openedcard.get(i).charAt(1) == Gostopcard.get(0).charAt(1)) {
+				collectcard.add(Openedcard.get(i));//일치하는 카드 목록에 일치하는 카드를 입력
+				Openedcard.remove(i);//일치하는 카드를 오픈된카드에서 삭제
+				i--;
+			}
+		}
+		if(collectcard.size() == 0) { //뒤집은 카드와 일치하는 공유카드가 없을 경우 collectcard.size() = 0
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//쌌을 경우
+					System.out.println("쌌다!");
+
+					Openedcard.addAll(tcollectcard);
+					tcollectcard.clear();
+				}
+			}
+			Openedcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+		}
+		else if(collectcard.size() == 1) { //뒤집은 카드와 일치하는 공유카드가 1장 있을 경우
+			if(tcollectcard.size() != 0) {
+				if(tcollectcard.get(0).charAt(0) == Gostopcard.get(0).charAt(0) && tcollectcard.get(0).charAt(1) == Gostopcard.get(0).charAt(1)) {//폭탄일 경우
+					System.out.println("폭탄!");
+					tcollectcard.add(Gostopcard.get(0));
+					Gostopcard.remove(0);
+					tcollectcard.add(collectcard.get(0));
+					collectcard.clear();
+				}
+			}
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else if(collectcard.size() == 2) { //뒤집은 카드와 일치하는 공유카드가 2장 있을 경우(랜덤으로 1장 선택) tcollectcard.size() = 2
+			Openedcard.add(collectcard.get(1));
+			collectcard.remove(1);
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			tcollectcard.addAll(collectcard);
+			collectcard.clear();
+		}
+		else { //뒤집은 카드와 일치하는 공유카드가 3장 있을 경우 collectcard.size() = 0
+			System.out.println("폭탄!");
+			collectcard.add(Gostopcard.get(0));
+			Gostopcard.remove(0);
+			P3table.addAll(collectcard);
+			collectcard.clear();
+		}
+		P3table.addAll(tcollectcard);
+		tcollectcard.clear();
+	}
+}
