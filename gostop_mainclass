@@ -1,0 +1,36 @@
+package gostop;
+
+public class Gostop_Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		GostopCard gc = new GostopCard();
+		gc.com();
+		gc.DeckMake();
+		gc.shuffle();
+		gc.distribute();
+		
+		for(int i = 0; i < 7; i++) {
+			System.out.println(i + 1 + "라운드 시작!");
+			gc.pay1();
+			gc.turn1();
+			gc.pay2();
+			gc.turn2();
+			gc.pay3();
+			gc.turn3();
+			gc.gcshow();
+			gc.score0();
+			gc.Ppcount();
+			gc.Psetcount();
+			gc.Ppiccount();
+			gc.Plicount();
+			gc.ptableshow();
+			if(gc.P1score >= 3 || gc.P2score >= 3 || gc.P3score >= 3) {
+				System.out.println("게임 종료!");
+				break;
+			}
+			System.out.println();
+		}
+	}
+
+}
